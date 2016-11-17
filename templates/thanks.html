@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Спасибо!</title>
+  {% include '_bootstrap.html' %}
+</head>
+<body class="index">
+  {% include '_head.html' %}
+  
+  <div class="jumbotron">
+    <div class="container">
+      <h2>Спасибо, {{ name }}!</h2>
+      <p>Ваш ответ записан.</p>
+      <p><a class="btn btn-primary btn-lg" href="{{ url_for('stats') }}" role="button">Посмотреть статистику</a></p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Статистика сайта</title>
+  {% include '_bootstrap.html' %}
+</head>
+<body>
+  {% include '_head.html' %}
+
+  <div class="container">
+    <h1>Статистика ответов пользователей</h1>
+    <table class="table table-small">
+      <thead>
+        <tr>
+          <th class="qa-number">№</th>
+          <th class="qa-question">Вопрос-картинка</th>
+          <th>Ответы</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for answer_id in answer_keys %}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td><img src="{{url_for('static', filename=answer_id + '.jpg')}}" class="qa-image"></td>
+          <td>
+            <ul class="list-group">
+              {% for user_answer, count in answers[answer_id].items() %}
+                <li class="list-group-item">
+                  <span class="badge">{{ count }}</span>
+                  {{ (user_answer or 'нет ответа')|e }}
+                </li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+      {% endfor %}  
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

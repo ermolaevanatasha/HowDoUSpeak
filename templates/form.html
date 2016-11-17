@@ -1,0 +1,110 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Как говорите вы?</title>
+  {% include '_bootstrap.html' %}
+ </head>
+<body>
+{% include '_head.html' %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9">
+    </div>
+  </div>
+
+  <form action="/form" method="POST" class="form-horizontal">
+    <h4>Анкета</h4>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Имя</label>
+      <div class="col-sm-4">
+        <input autofocus type="text" name="name" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Возраст</label>
+      <div class="col-sm-4">
+        <input type="text" name="age" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Пол</label>
+      <div class="col-sm-4">
+        <div class="radio">
+          <label>
+            <input type="radio" checked name="sex" value="man">мужской
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="sex" value="woman">женский
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {% macro regions_list(name) -%}
+      <select name="{{ name }}" class="form-control">
+        <option value="">Выберите регион</option>
+        {% for region in regions -%}
+          <option value="{{ region['id'] }}">{{ region['title'] }}</option>
+        {%- endfor %}
+      </select>
+    {% endmacro %}
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Место рождения</label>
+      <div class="col-sm-4">
+        {{ regions_list('birthplace') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Место проживания</label>
+      <div class="col-sm-4">
+        {{ regions_list('live_now') }}
+        <p class="help-block">Регион, в котором вы прожили большую часть жизни.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-9">
+        <hr>
+        <div class="panel panel-default">
+          <div class="panel-heading">Опрос</div>
+          <div class="panel-body">
+            <p>Ниже вы увидите {{ answer_keys|length }} изображений с различными предметами.
+            <p>Для каждого из них вам нужно будет ответить на вопрос: как вы называете данный предмет?
+            <p><strong>Если вы не знаете как называется предмет, то оставьте поле ввода пустым.</strong>
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="qa-number">№</th>
+                <th class="qa-question">Вопрос-картинка</th>
+                <th>Ответ</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for answer_id in answer_keys %}
+              <tr>
+                <td>{{loop.index}}</td>
+                <td><img src="{{url_for('static', filename=answer_id + '.jpg')}}" class="qa-image"></td>
+                <td>
+                  <input type="text" name="{{ answer_id }}" class="form-control" autocomplete="off" placeholder="Ваш ответ">
+                </td>
+              </tr>
+            {% endfor %}  
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Отправить</button>
+  </form>
+</div>
+</body>
+</html>
+
+

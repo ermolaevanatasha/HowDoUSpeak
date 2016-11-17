@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Статистика сайта</title>
+  {% include '_bootstrap.html' %}
+</head>
+<body>
+  {% include '_head.html' %}
+
+  <div class="container">
+    <form action="/search" class="form-inline">
+      <div class="form-group">
+        <input type="text" name="text" value="{{ text }}" class="form-control" placeholder="Cлово для поиска" autofocus>
+        <button type="submit" class="btn btn-primary">Искать</button>
+      </div>
+    </form>
+    <br>
+
+    {% if result|length %}
+      <div class="panel panel-default">
+        <div class="panel-heading">Результаты поиска</div>
+        <table class="table table">
+          <thead>
+            <tr>
+              <th class="qa-number">№</th>
+              <th class="qa-question">Вопрос-картинка</th>
+              <th>Регион и количество пользователей</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for answer_id, items in result.items() %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><img src="{{url_for('static', filename=answer_id + '.jpg')}}" class="qa-image"></td>
+                <td>
+                  <ul class="list-group">
+                    {% for region_name, count in items.items() %}
+                      <li class="list-group-item">
+                        <span class="badge">{{ count }}</span>
+                        {{ (region_name or 'Регион не выбран')|e }}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </td>
+              </tr>
+            {% endfor %}             
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>По вашему запросу ничего не найдено.
+    {% endif %} 
+  </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{{url_for('index')}}">Как говорите вы?</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        {% macro render_sitem(endpoint, display, newtab=False) %}
+          <li{% if request.endpoint == endpoint %} class="active"{% endif %}>
+            <a href="{{url_for(endpoint)}}"{% if newtab %} target="_blank"{% endif %}>{{display}}</a>
+          </li>
+        {% endmacro %}
+
+        {{render_sitem('get_form', 'Анкета')}}
+        {{render_sitem('stats', 'Статистика')}}
+        {{render_sitem('json_result', 'Все данные', newtab=True)}}
+        {{render_sitem('search', 'Поиск')}}
+      </ul>
+      {% if request.endpoint not in ['search', 'results']  %}
+        <form class="navbar-form navbar-right" action="{{ url_for('results') }}">
+          <div class="form-group">
+            <input type="text" name="text" class="form-control" placeholder="Поиск">
+          </div>
+          <button type="submit" class="btn btn-default">Искать</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</nav>
